@@ -121,6 +121,24 @@ const int function5();      // 返回一个常数
 const int* function6();     // 返回一个指向常量的指针变量，使用：const int *p = function6();
 int* const function7();     // 返回一个指向变量的常指针，使用：int* const p = function7();
 ```
+//const_cast
+const_cast is used to cast away the constness of variables
+#include <iostream> 
+using namespace std; 
+  
+int fun(int* ptr) 
+{ 
+    return (*ptr + 10); 
+} 
+  
+int main(void) 
+{ 
+    const int val = 10; 
+    const int *ptr = &val; 
+    int *ptr1 = const_cast <int *>(ptr); 
+    cout << fun(ptr1); 
+    return 0; 
+} 
 
 ### static
 
