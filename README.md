@@ -283,6 +283,9 @@ volatile int i = 10;
 * volatile 关键字声明的变量，每次访问时都必须从内存中取出值（没有被 volatile 修饰的变量，可能由于编译器的优化，从 CPU 寄存器中取值）
 * const 可以是 volatile （如只读的状态寄存器）
 * 指针可以是 volatile
+* const_cast can also be used to cast away volatile attribute. 
+
+reference article: https://www.drdobbs.com/cpp/volatile-the-multithreaded-programmers-b/184403766
 
 ### assert()
 
