@@ -1038,7 +1038,7 @@ class Copier: public Scanner, public Printer
 {
 };
 ```
-
+However, this leads to one more problem: if Scanner and Printer share a PoweredDevice base class, who is responsible for creating it? The answer, as it turns out, is Copier. The Copier constructor is responsible for creating PoweredDevice.
 
 ### 虚继承、虚函数
 
