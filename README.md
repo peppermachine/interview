@@ -1018,6 +1018,28 @@ virtual int A() = 0;
 
 实际上，vbptr 指的是虚基类表指针（virtual base table pointer），该指针指向了一个虚基类表（virtual table），虚表中记录了虚基类与本类的偏移地址；通过偏移地址，这样就找到了虚基类成员，而虚继承也不用像普通多继承那样维持着公共基类（虚基类）的两份同样的拷贝，节省了存储空间。
 
+Virtual base classes
+
+To share a base class, simply insert the “virtual” keyword in the inheritance list of the derived class. This creates what is called a virtual base class, which means there is only one base object. The base object is shared between all objects in the inheritance tree and it is only constructed once. Here is an example (without constructors for simplicity) showing how to use the virtual keyword to create a shared base class:
+```cpp
+class PoweredDevice
+{
+};
+
+class Scanner: virtual public PoweredDevice
+{
+};
+
+class Printer: virtual public PoweredDevice
+{
+};
+
+class Copier: public Scanner, public Printer
+{
+};
+```
+
+
 ### 虚继承、虚函数
 
 * 相同之处：都利用了虚指针（均占用类的存储空间）和虚表（均不占用类的存储空间）
