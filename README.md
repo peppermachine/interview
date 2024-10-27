@@ -694,6 +694,8 @@ auto fcn2(It beg, It end) -> typename remove_reference<decltype(*beg)>::type
 ```
 
 ### 引用
+lvalue — The expression that refers to a specific memory location. So these are designated objects 
+rvalue — The expression that refers to a disposable temporary object so they can’t be manipulated at the place they are created and are soon to be destroyed.
 
 #### 左值引用
 
@@ -707,6 +709,22 @@ auto fcn2(It beg, It end) -> typename remove_reference<decltype(*beg)>::type
 
 * 消除两个对象交互时不必要的对象拷贝，节省运算存储资源，提高效率。
 * 能够更简洁明确地定义泛型函数。
+
+```cpp
+ int x{};
+ const int y = 0; // or const int x {0};
+=========================================================
+// l-value references (Table 1)
+ int &ref1{ x }; // OK
+ int &ref2{ y }; // Error
+ int &ref3{ 5 }; // Error
+=========================================================
+ // lvalue references to const (Table 2)
+ const int &ref4{ x }; // OK
+ const int &ref5{ y }; // OK but can't modify
+ const int &ref6{ 5 }; // OK
+ int &ref7{ 5 }; // Error
+```
 
 #### 引用折叠
 
