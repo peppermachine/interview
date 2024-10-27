@@ -1075,6 +1075,10 @@ However, this leads to one more problem: if Scanner and Printer share a PoweredD
 3. realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。
 4. alloca：在栈上申请内存。程序在出栈的时候，会自动释放内存。但是需要注意的是，alloca 不具可移植性, 而且在没有传统堆栈的机器上很难实现。alloca 不宜使用在必须广泛移植的程序中。C99 中支持变长数组 (VLA)，可以用来替代 alloca。
 
+malloc() allocates memory on the process heap. Memory allocated using malloc() will remain on the heap until it is freed using free().
+
+alloca() allocates memory within the current function's stack frame. Memory allocated using alloca() will be removed from the stack when the current function returns.
+
 #### malloc、free
 
 用于分配、释放内存
