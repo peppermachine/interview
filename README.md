@@ -701,15 +701,6 @@ rvalue — The expression that refers to a disposable temporary object so they c
 
 常规引用，一般表示对象的身份。
 
-#### 右值引用
-
-右值引用就是必须绑定到右值（一个临时对象、将要销毁的对象）的引用，一般表示对象的值。
-
-右值引用可实现转移语义（Move Sementics）和精确传递（Perfect Forwarding），它的主要目的有两个方面：
-
-* 消除两个对象交互时不必要的对象拷贝，节省运算存储资源，提高效率。
-* 能够更简洁明确地定义泛型函数。
-
 ```cpp
  int x{};
  const int y = 0; // or const int x {0};
@@ -725,6 +716,74 @@ rvalue — The expression that refers to a disposable temporary object so they c
  const int &ref6{ 5 }; // OK
  int &ref7{ 5 }; // Error
 ```
+
+
+#### 右值引用
+
+右值引用就是必须绑定到右值（一个临时对象、将要销毁的对象）的引用，一般表示对象的值。
+
+```cpp
+=========================================================
+int x{};
+const int y = 0; // or const int x {0};
+=========================================================
+// r-value references (Table 3)
+ int &&ref7{ x }; // Error
+ int &&ref8{ y }; // Error
+ int &&ref9{ 5 }; // OK
+ ref9 = 6;        // OK
+=========================================================
+// r-value references to const (Table 4)
+ const int &&ref10{ x }; // Error
+ const int &&ref11{ y }; // Error
+ const int &&ref12{ 5 }; // OK but can't modify
+=========================================================
+```
+
+Rvalue references add the possibility to express a new intention in code: — disposable objects. When someone passes it over to you (as a reference), it means they no longer care about it.
+
+For instance, consider the rvalue reference that this function takes:
+```cpp
+=========================================================
+void f(MyClass&& x)
+{
+  ...
+  // Caller doesn't care about x. do whatever you want with it.
+}
+```
+
+Thus rvalues can be useful for —
+1. Improving performance
+2. Taking ownership of an object
+
+右值引用可实现转移语义（Move Sementics）和精确传递（Perfect Forwarding），它的主要目的有两个方面：
+
+* 消除两个对象交互时不必要的对象拷贝，节省运算存储资源，提高效率。
+* 能够更简洁明确地定义泛型函数。
+  
+```cpp
+=========================================================
+void fun(const int &lref) // lvalue arguments will select this 
+{
+  std::cout << "l-value reference to const\n";
+}
+void fun(int &&rref) // rvalue arguments will select this function
+{
+  std::cout << "r-value reference\n";
+}
+int main()
+{
+ int x{ 5 };
+ fun(x); // lvalue argument calls lvalue version of function
+  
+ int &&ref{ 5 }; 
+ fun(ref);// calls lvalue version of function!!! we didn't move it
+ fun(std::move(ref));// calls r-value version of function
+ return 0;
+}
+=========================================================
+```
+
 
 #### 引用折叠
 
