@@ -1188,8 +1188,11 @@ std::auto_ptr<std::string> ps (new std::string(str))；
 * 支持定制型删除器（custom deleter），可防范 Cross-DLL 问题（对象在动态链接库（DLL）中被 new 创建，却在另一个 DLL 内被 delete 销毁）、自动解除互斥锁
 
 ```cpp
-std::shared_ptr<Event> p(new Event);  // calling default construtor
-auto p = std::make_shared<Event>(8); // calling constructor
+
+Resource* res { new Resource };
+std::shared_ptr<Resource> ptr1{ res };
+std::shared_ptr<Resource> ptr2 { ptr1 }; // make another std::shared_ptr pointing to the same thing
+auto ptr1 { std::make_shared<Resource>() };
 ```
 ##### weak_ptr
 
@@ -1202,7 +1205,30 @@ weak_ptr 允许你共享但不拥有某对象，一旦最末一个拥有该对�
 unique_ptr 是 C++11 才开始提供的类型，是一种在异常时可以帮助避免资源泄漏的智能指针。采用独占式拥有，意味着可以确保一个对象和其相应的资源同一时间只被一个 pointer 拥有。一旦拥有着被销毁或编程 empty，或开始拥有另一个对象，先前拥有的那个对象就会被销毁，其任何相应资源亦会被释放。
 
 * unique_ptr 用于取代 auto_ptr
+```cpp
+std::unique_ptr<Resource> res1{ new Resource{} }; // Resource created here
+std::unique_ptr<Resource> res2{}; // Start as nullptr
 
+// res2 = res1; // Won't compile: copy assignment is disabled
+res2 = std::move(res1); // res2 assumes ownership, res1 is set to null
+
+C++ 14 auto ptr{ std::make_unique<Resource>() };
+
+void useResource(const Resource* res)
+{
+	if (res)
+		std::cout << *res << '\n';
+	else
+		std::cout << "No resource\n";
+}
+useResource(ptr.get()); // note: get() used here to get a pointer to the Resource
+
+```
+#### Convert unique_ptr to shared_ptr
+```cpp
+std::unique_ptr<int> up_ = std::make_unique<int>();
+std::shared_ptr<int> sp_ = std::move(up_);
+```
 ##### auto_ptr
 
 被 c++11 弃用，原因是缺乏语言特性如 “针对构造和赋值” 的 `std::move` 语义，以及其他瑕疵。
