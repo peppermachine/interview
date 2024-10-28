@@ -1779,6 +1779,11 @@ typedef struct BiTNode
     * 大顶堆：根 >= 左 && 根 >= 右
     * 小顶堆：根 <= 左 && 根 <= 右
 * 二叉查找树（二叉排序树）：左 < 根 < 右
+Binary Search Tree (BST): 
+Searching: For searching element 1, we have to traverse all elements (in order 3, 2, 1). Therefore, searching in binary search tree has worst case complexity of O(n). In general, the time complexity is O(h) where h is the height of BST.
+Insertion: For inserting element 0, it must be inserted as the left child of 1. Therefore, we need to traverse all elements (in order 3, 2, 1) to insert 0 which has the worst-case complexity of O(n). In general, the time complexity is O(h).
+Deletion: For deletion of element 1, we have to traverse all elements to find 1 (in order 3, 2, 1). Therefore, deletion in binary tree has worst case complexity of O(n). In general, the time complexity is O(h).
+
 * 平衡二叉树（AVL树）：| 左子树树高 - 右子树树高 | <= 1
 * 最小失衡树：平衡二叉树插入新结点导致失衡的子树：调整：
     * LL型：根的左孩子右旋
