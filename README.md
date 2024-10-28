@@ -1187,6 +1187,10 @@ std::auto_ptr<std::string> ps (new std::string(str))；
 
 * 支持定制型删除器（custom deleter），可防范 Cross-DLL 问题（对象在动态链接库（DLL）中被 new 创建，却在另一个 DLL 内被 delete 销毁）、自动解除互斥锁
 
+```cpp
+std::shared_ptr<Event> p(new Event);  // calling default construtor
+auto p = std::make_shared<Event>(8); // calling constructor
+```
 ##### weak_ptr
 
 weak_ptr 允许你共享但不拥有某对象，一旦最末一个拥有该对象的智能指针失去了所有权，任何 weak_ptr 都会自动成空（empty）。因此，在 default 和 copy 构造函数之外，weak_ptr 只提供 “接受一个 shared_ptr” 的构造函数。
